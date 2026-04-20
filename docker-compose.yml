@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: bank_db
+    restart: always
+    environment:
+      POSTGRES_DB: bank_db
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: admin_password
+    networks:
+      - empire_network
+    ports:
+      - "5432:5432" # Оставляем, чтобы ты мог зайти в базу через DBeaver/pgAdmin
+
+  web:
+    build: .
+    container_name: bank_app
+    restart: always
+    dns:
+      - 8.8.8.8
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db  # Теперь сайт ищет базу по имени сервиса
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - empire_network
+
+  bot:
+    build: .
+    container_name: bank_bot
+    restart: always
+    dns:
+      - 8.8.8.8
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+    depends_on:
+      - db
+    networks:
+      - empire_network
+
+networks:
+  empire_network:
+    driver: bridge

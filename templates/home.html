@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Empire Bank — Твой капитал в безопасности</title>
+    <style>
+        html {
+    scroll-behavior: smooth; /* Плавная прокрутка */
+        }
+
+        :root {
+            --primary: #8a2be2; /* Твой фиолетовый */
+            --accent: #00ffcc;  /* Бирюзовый для акцентов */
+            --bg: #0f0f1a;      /* Глубокий темный фон */
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Навигация */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 10% ;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px); /* Эффект стекла */
+            position: fixed;
+            width: 80%;
+            z-index: 1000;
+        }
+
+        /* Главный блок (Hero Section) */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at top right, #2a0e4a, transparent);
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            margin: 0;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 500px;
+        }
+
+        /* Кнопка "Оформить" */
+        .btn-main {
+            padding: 15px 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+
+        .btn-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(138, 43, 226, 0.8);
+        }
+
+        /* Плавающая карта (как на твоем скрине) */
+        .card-visual {
+            position: relative;
+            width: 400px;
+            height: 250px;
+            background: linear-gradient(135deg, #1d1d1d, #000);
+            border: 1px solid #444;
+            border-radius: 20px;
+            margin-left: 100px;
+            transform: rotateY(-20deg) rotateX(10deg);
+            box-shadow: 20px 20px 50px rgba(0,0,0,0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+       <div class="menu">
+    {% if username %}
+    <p>Добро пожаловать, <strong>{{ username }}</strong>!</p>
+    <a href="{{ url_for('register.logout') }}" class="btn btn-danger">Выйти</a>
+    <p>Ваш баланс: <span style="color: var(--accent); font-weight: bold;">{{ balance }} ₽</span></p>
+    <a href="#credits" class="btn-main">Посмотреть кредиты</a>
+    {% else %}
+        <!-- Если не вошел, показываем две кнопки -->
+        <a href="{{ url_for('register.login_page') }}" style="margin-right: 20px;">Войти</a>
+        <a href="{{ url_for('register.register_page') }}" class="btn-small">Регистрация</a>
+    {% endif %}
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+        <h1>Empire Black</h1>
+        <p>Твой банк. Твои правила. Твой сервер.</p>
+        {% if not username %}
+        <a href="{{ url_for('register.register_page') }}" class="btn-main">Заказать карту</a>
+        <p style="margin-top: 15px; font-size: 0.9rem;">
+            Уже есть карта? <a href="{{ url_for('register.login_page') }}" style="color: var(--primary);">Войти в банк</a>
+        </p>
+    {% else %}
+        <a href="{{ url_for('kredits.dashboard') }}" class="btn-main">Перейти в кабинет</a>
+    {% endif %}
+</div>
+
+        
+        <!-- Та самая карта с эффектом объема -->
+        <div class="card-visual">
+            <div style="padding: 20px;">
+                <div style="color: gold;">EMPIRE GOLD</div>
+                <div style="font-size: 1.5rem; margin-top: 20px;">{{ balance }} ₽</div>
+                <div style="margin-top: 150px; font-family: monospace; letter-spacing: 2px;">
+                    **** **** **** 4412
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="credits" style="padding: 100px 10%; background: #151525;">
+    <h2 style="font-size: 2.5rem; text-align: center; color: var(--primary);">Кредитные предложения</h2>
+    
+    <div style="display: flex; gap: 30px; justify-content: center; margin-top: 50px;">
+        <!-- Карточка Кредита 1 -->
+        <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; width: 300px; border: 1px solid #333;">
+            <h3>Потребительский</h3>
+            <p style="font-size: 2rem; color: var(--accent);">от 5.9%</p>
+            <p>На любые нужды до 5 000 000 ₽</p>
+            <a href="{{ url_for('kredits.apply_credit', c_type='consumer') }}" class="btn-small" style="background: var(--primary); padding: 10px 20px; display: block; text-align: center; border-radius: 10px; text-decoration: none; color: white;">Оформить</a>
+        </div>
+
+        <!-- Карточка Кредита 2 -->
+        <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; width: 300px; border: 1px solid #333;">
+            <h3>Автокредит</h3>
+            <p style="font-size: 2rem; color: var(--accent);">от 8.5%</p>
+            <p>На новый или подержанный автомобиль</p>
+            <a href="{{ url_for('kredits.apply_credit', c_type='auto') }}" class="btn-small" style="background: var(--primary); padding: 10px 20px; display: block; text-align: center; border-radius: 10px; text-decoration: none; color: white;">Оформить</a>
+        </div>
+    </div>
+</section>
+<section style="padding: 50px 10%;">
+    <h3 style="color: var(--accent);">Ваши активные заявки</h3>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px;">
+        {% if credits %}
+            {% for cred in credits %}
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding: 10px 0;">
+                    <span>Кредит: <strong>{{ cred[0] }}</strong></span>
+                    <span style="color: gold;">Статус: {{ cred[1] }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>У вас пока нет активных заявок.</p>
+        {% endif %}
+    </div>
+    <div class="my-credits">
+    <h3>Ваши заявки на кредит:</h3>
+    <ul>
+    {% for cred in credits %}
+        <li>
+            <strong>{{ cred[0] }}</strong> — 
+            <span class="status">{{ cred[1] }}</span>
+        </li>
+    {% else %}
+        <li>У вас пока нет активных заявок</li>
+    {% endfor %}
+    </ul>
+</div>
+
+</section>
+
+
+</body>
+</html>

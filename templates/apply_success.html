@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empire Bank | Заявка отправлена</title>
+    <style>
+        body { margin:0; font-family:Segoe UI, Arial, sans-serif; background:#0b1020; color:#eef1ff; display:flex; min-height:100vh; align-items:center; justify-content:center; }
+        .card { width:min(580px, 92vw); border:1px solid #2f3a5f; border-radius:16px; background:#161f37; padding:24px; }
+        .btn { display:inline-block; margin-right:10px; margin-top:10px; padding:10px 14px; border-radius:10px; text-decoration:none; color:#eef1ff; border:1px solid #3f4d7e; }
+        .primary { background:linear-gradient(135deg, #8a2be2, #6f67ff); border-color:transparent; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 style="margin-top:0;">Заявка принята</h1>
+        <p>Заявка на продукт <strong>{{ product }}</strong> успешно отправлена. Мы проверим данные и обновим статус в личном кабинете.</p>
+        <a class="btn primary" href="{{ url_for('kredits.dashboard') }}">Открыть кабинет</a>
+        <a class="btn" href="{{ url_for('kredits.loans_page') }}">Еще продукты</a>
+    </div>
+</body>
+</html>

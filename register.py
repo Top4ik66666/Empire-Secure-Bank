@@ -34,12 +34,13 @@ def logout():
 def create_account():
     login = request.form.get("new_login")
     pwd = request.form.get("new_password")
+    phone = request.form.get("phone", "").strip()
     code = str(random.randint(100000, 999999))
 
     print(f"\n!!! ВНИМАНИЕ, КОД ДЛЯ {login}: {code} !!!\n")
 
     try:
-        if register_user_in_db(login, pwd, code):
+        if register_user_in_db(login, pwd, code, phone):
             session["pending_user_login"] = login
             return redirect(url_for("register.verify_page"))
         return "Ошибка: не удалось сохранить в базу."
@@ -51,8 +52,11 @@ def create_account():
 def admin_zone():
     from db_manager import get_all_users
 
-    users_data = get_all_users()
-    return render_template("admin.html", users=users_data)
+    try:
+        users_data = get_all_users()
+        return render_template("admin.html", users=users_data)
+    except Exception as e:
+        return f"Ошибка доступа к админ-панели: {e}", 500
 
 
 @register_bp.route("/verify-page")
@@ -64,18 +68,26 @@ def verify_page():
 def verify_code():
     code_entered = request.form.get("sms_code")
     username = session.get("pending_user_login")
+    if not username:
+        return redirect(url_for("register.register_page"))
 
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("SELECT sms_code FROM users WHERE username = %s", (username,))
     result = cur.fetchone()
-    cur.close()
-    conn.close()
-
     if result and str(result[0]) == str(code_entered):
+        cur.execute(
+            "UPDATE users SET is_verified = TRUE WHERE username = %s",
+            (username,),
+        )
+        conn.commit()
+        cur.close()
         session.pop("pending_user_login", None)
         session["user_id"] = username
+        conn.close()
         return redirect(url_for("index"))
+    cur.close()
+    conn.close()
     return "Неверный код!"
 
 

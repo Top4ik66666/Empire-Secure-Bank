@@ -23,7 +23,7 @@ services:
     env_file:
       - .env
     environment:
-      - DB_HOST=db  # Теперь сайт ищет базу по имени сервиса
+      - DB_HOST=db # Сайт ищет базу по имени сервиса docker-compose
     ports:
       - "5000:5000"
     depends_on:

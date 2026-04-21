@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empire Bank | Кредитные продукты</title>
+    <style>
+        :root { --bg:#0a0e1d; --card:#131b33; --text:#edf1ff; --muted:#96a2c7; --accent:#00d4ff; --primary:#8a2be2; --border:#29355c; }
+        body { margin:0; font-family:Segoe UI, Arial, sans-serif; background:var(--bg); color:var(--text); }
+        .container { width:min(1100px, 92vw); margin:0 auto; padding:26px 0 48px; }
+        .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+        .btn { padding:10px 16px; border-radius:10px; border:1px solid var(--border); text-decoration:none; color:var(--text); display:inline-block; }
+        .btn.primary { background:linear-gradient(135deg, var(--primary), #6f67ff); border-color:transparent; }
+        .products { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+        .card { background:linear-gradient(170deg, #121a30, #101426); border:1px solid var(--border); border-radius:16px; padding:18px; }
+        .tag { color:var(--accent); font-weight:600; }
+        .meta { color:var(--muted); margin-top:8px; min-height:48px; }
+        @media (max-width: 900px) { .products { grid-template-columns:1fr; } .top { flex-direction:column; gap:12px; align-items:flex-start; } }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="top">
+            <div>
+                <h1 style="margin:0;">Кредитные продукты Empire Bank</h1>
+                <p style="color:var(--muted);">Выберите подходящий вариант и отправьте заявку онлайн.</p>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <a href="{{ url_for('index') }}" class="btn">На главную</a>
+                {% if username %}
+                    <a href="{{ url_for('kredits.dashboard') }}" class="btn primary">Личный кабинет</a>
+                {% else %}
+                    <a href="{{ url_for('register.login_page') }}" class="btn primary">Войти</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <section class="products">
+            {% for code, product in loan_catalog.items() %}
+            <article class="card">
+                <h2 style="margin-top:0;">{{ product.name }}</h2>
+                <div class="tag">{{ product.rate }}</div>
+                <div class="meta">{{ product.max_amount }}</div>
+                <ul style="color:var(--muted); padding-left:18px;">
+                    <li>Онлайн-заявка за 2 минуты</li>
+                    <li>Индивидуальные условия погашения</li>
+                    <li>Статус в личном кабинете</li>
+                </ul>
+                <a href="{{ url_for('kredits.apply_credit', c_type=code) }}" class="btn primary">Оформить заявку</a>
+            </article>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empire Bank | Личный кабинет</title>
+    <style>
+        :root { --bg:#0b0f1f; --card:#151d36; --text:#eaf0ff; --muted:#9ca8ce; --border:#2d3a66; --ok:#60d394; --accent:#00d4ff; }
+        body { margin:0; background:var(--bg); color:var(--text); font-family:Segoe UI, Arial, sans-serif; }
+        .container { width:min(1140px, 92vw); margin:0 auto; padding:24px 0 48px; }
+        .row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+        .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; }
+        .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+        .btn { padding:10px 14px; border-radius:10px; border:1px solid var(--border); text-decoration:none; color:var(--text); }
+        .table { width:100%; border-collapse:collapse; margin-top:12px; }
+        .table th,.table td{ border-bottom:1px solid var(--border); padding:10px 8px; text-align:left; }
+        .status { color:#f8d26a; font-weight:600; }
+        .verify-ok { color: var(--ok); }
+        .verify-pending { color: #f8d26a; }
+        @media (max-width: 900px) { .row { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="top">
+            <h1 style="margin:0;">Личный кабинет: {{ username }}</h1>
+            <div style="display:flex; gap:8px;">
+                <a href="{{ url_for('index') }}" class="btn">Главная</a>
+                <a href="{{ url_for('register.logout') }}" class="btn">Выйти</a>
+            </div>
+        </div>
+
+        <section class="row">
+            <div class="card">
+                <h3>Профиль клиента</h3>
+                <p><strong>Логин:</strong> {{ username }}</p>
+                <p><strong>Телефон:</strong> {{ user_info.phone if user_info.phone else "не указан" }}</p>
+                <p><strong>Статус верификации:</strong> <span class="{{ 'verify-ok' if user_info.is_verified else 'verify-pending' }}">{{ "Подтвержден" if user_info.is_verified else "Ожидает" }}</span></p>
+                <p><strong>Доступный баланс:</strong> <span style="color:var(--accent);">{{ user_info.balance }} ₽</span></p>
+                <a href="{{ url_for('kredits.loans_page') }}" class="btn">Оформить новый кредит</a>
+            </div>
+            <div class="card">
+                <h3>Финансовые сервисы</h3>
+                <ul style="color:var(--muted); padding-left:18px;">
+                    <li>Подача заявок на потребительские кредиты</li>
+                    <li>Подача заявок на автокредиты</li>
+                    <li>Подача заявок на ипотеку</li>
+                    <li>Отслеживание статусов заявок онлайн</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card" style="margin-top:18px;">
+            <h2 style="margin-top:0;">История заявок</h2>
+            <table class="table">
+                <thead><tr><th>Тип</th><th>Сумма</th><th>Срок</th><th>Статус</th><th>Дата</th></tr></thead>
+                <tbody>
+                    {% for cred in credits %}
+                        <tr>
+                            <td>{{ cred[0] }}</td>
+                            <td>{{ cred[1] }}</td>
+                            <td>{{ cred[2] if cred[2] else "-" }} мес.</td>
+                            <td class="status">{{ cred[3] }}</td>
+                            <td>{{ cred[4] if cred|length > 4 else "-" }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="5">Пока нет активных заявок.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

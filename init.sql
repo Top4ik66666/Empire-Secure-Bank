@@ -25,9 +25,15 @@ CREATE TABLE IF NOT EXISTS credit_requests (
     username TEXT NOT NULL,
     type TEXT NOT NULL,
     amount TEXT DEFAULT '500 000',
+    term_months INTEGER,
+    comment TEXT DEFAULT '',
+    created_at TIMESTAMP DEFAULT NOW(),
     status TEXT DEFAULT 'На рассмотрении'
 );
 
-ALTER TABLE users ADD COLUMN phone VARCHAR(20);
-ALTER TABLE users ADD COLUMN is_verified BOOLEAN DEFAULT FALSE;
-ALTER TABLE users ADD COLUMN sms_code VARCHAR(6); -- Код для проверки
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(20);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS sms_code VARCHAR(6); -- Код для проверки
+ALTER TABLE credit_requests ADD COLUMN IF NOT EXISTS term_months INTEGER;
+ALTER TABLE credit_requests ADD COLUMN IF NOT EXISTS comment TEXT DEFAULT '';
+ALTER TABLE credit_requests ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW();

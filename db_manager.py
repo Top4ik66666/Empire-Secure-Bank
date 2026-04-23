@@ -14,7 +14,7 @@ _SCHEMA_ENSURED = False
 # HTTP-прокси для api.telegram.org (ошибка 101 / блокировка без прокси).
 # Свой прокси: TELEGRAM_HTTP_PROXY=http://host:port
 # Прямое подключение: TELEGRAM_HTTP_PROXY=
-_DEFAULT_TELEGRAM_HTTP_PROXY = "http://45.67.215.18:80"
+_DEFAULT_TELEGRAM_HTTP_PROXY = os.getenv("TELEGRAM_HTTP_PROXY", "")
 
 
 def telegram_http_proxies():

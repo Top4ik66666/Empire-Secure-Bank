@@ -28,4 +28,5 @@ docker-compose up -d
 - [ ] Интеграция с Terraform для облачного деплоя.
 - [ ] Настройка мониторинга через Prometheus/Grafana.
 - [ ] Внедрение Vault для хранения секретов (API ключей).
-- [ ] https://t.me/Ierihonlog
+- [ ] 
+- [ ] если хотите следить за развитием других проектов: https://t.me/Ierihonlog
